@@ -87,7 +87,7 @@ client.on('messageCreate', async message => {
     attachments_channel = '1195599598362832926';
   }
   if (message.attachments.size) {
-    let attachments = Array.from(message.attachments.values());
+    const attachments = Array.from(message.attachments.values());
       attachments.forEach(async attachment => {
         // console.log(attachment.url);
         let embed = new EmbedBuilder().setTitle('File Attachment!').setColor(0x0099FF).setTimestamp();
