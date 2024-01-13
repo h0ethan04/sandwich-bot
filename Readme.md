@@ -27,7 +27,7 @@ enter my server to post gore.
 Though this is far from the level of bots that are used by many major servers, this bot is special to me because it was the first real project I've needed to do.
 This was the first project where a deadline was all the more real, where I am fighting the clock to learn the discord.js api, to learn JavaScript.
 Although it was created in circumstances that are far from ideal, hopefully, in the case of a raid, it allows me to quickly respond and protect the ~1000
-students that I owe the responsibility to, as the owner of their course servers.
+students that I am responsible for, as the owner of their course servers.
 
 ## About the bot
 This bot is writtin in JavaScript, and uses Node.js as a template. 
