@@ -96,7 +96,8 @@ client.on('messageCreate', async message => {
         }
         embed.addFields(
           {name: 'display name', value: message.author.displayName},
-          {name: 'uid', value: message.author.id}
+          {name: 'uid', value: message.author.id},
+          {name: 'message url', value: message.url}
         );
         (await client.channels.fetch(attachments_channel)).send({embeds: [embed]});
       });
