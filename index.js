@@ -116,7 +116,8 @@ client.on('messageCreate', async message => {
       const embed = new EmbedBuilder().setTitle('Embed Attachment!').setColor(0x0099FF).setTimestamp().addFields(
         {name: 'display name', value: message.author.displayName},
         {name: 'uid', value: message.author.id},
-        {name: 'message url', value: message.url}
+        {name: 'message url', value: message.url},
+        {name: 'embed url', value: embedAttachment.url}
       ).setImage(embedAttachment.data.thumbnail != null ? embedAttachment.data.thumbnail.url : embedAttachment.data.image.url);
 
       const row = new ActionRowBuilder().addComponents(
