@@ -1,6 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, GatewayIntentBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, GuildBanManager } = require('discord.js');
+const { Client, Collection, GatewayIntentBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 require('dotenv').config();
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages] });
@@ -83,14 +83,15 @@ const ics45jchannels = [
 client.on('messageCreate', async message => {
   if (message.author.bot) return;
 
-  let attachments_channel;
-  if (ics45jchannels.includes(message.channel.id)) {
-    attachments_channel = '1195599598362832926';
-  }  else if (cs161channels.includes(message.channel.id)) {
-    attachments_channel = '1195479401056440320';
-  }  else {
-    attachments_channel = '1195479401056440320';
-  }
+  // let attachments_channel;
+  // if (ics45jchannels.includes(message.channel.id)) {
+  //   attachments_channel = '1195599598362832926';
+  // }  else if (cs161channels.includes(message.channel.id)) {
+  //   attachments_channel = '1195479401056440320';
+  // }  else {
+  //   attachments_channel = '1195479401056440320';
+  // }
+  const attachments_channel = ics45jchannels.includes(message.channel.id) ? '1195599598362832926' : '1195479401056440320';
 
   if (message.attachments.size) {
     const attachments = Array.from(message.attachments.values());
@@ -103,23 +104,23 @@ client.on('messageCreate', async message => {
         );
 
         const row = new ActionRowBuilder().addComponents(
-          new ButtonBuilder().setLabel('Confirm Ban').setStyle(ButtonStyle.Primary).setCustomId('confirm ban'),
+          new ButtonBuilder().setLabel('Ban').setStyle(ButtonStyle.Primary).setCustomId('ban'),
           new ButtonBuilder().setLabel('Cancel').setStyle(ButtonStyle.Danger).setCustomId('cancel')
         );
 
         (await client.channels.fetch(attachments_channel)).send({embeds: [embed], components: [row]});
       });
   }
-  if (message.embeds.size) {
+  if (message.embeds.length) {
     message.embeds.forEach(async embedAttachment => {
-      const embed = new EmbedBuilder().setTitle('Embed Attachment!').setColor(0x0099FF).setTimestamp().setImage(embedAttachment.url).addFields(
+      const embed = new EmbedBuilder().setTitle('Embed Attachment!').setColor(0x0099FF).setTimestamp().addFields(
         {name: 'display name', value: message.author.displayName},
         {name: 'uid', value: message.author.id},
         {name: 'message url', value: message.url}
-      );
+      ).setImage(embedAttachment.data.thumbnail != null ? embedAttachment.data.thumbnail.url : embedAttachment.data.image.url);
 
       const row = new ActionRowBuilder().addComponents(
-        new ButtonBuilder().setLabel('Confirm Ban').setStyle(ButtonStyle.Primary).setCustomId('confirm ban'),
+        new ButtonBuilder().setLabel('Ban').setStyle(ButtonStyle.Primary).setCustomId('ban'),
         new ButtonBuilder().setLabel('Cancel').setStyle(ButtonStyle.Danger).setCustomId('cancel')
       );
 
@@ -132,13 +133,21 @@ client.on('messageCreate', async message => {
 client.on('interactionCreate', async interaction => {
   if (!interaction.isButton()) return;
 
-  if (interaction.customId === 'confirm ban') {
+  if (interaction.customId === 'ban') {
+    const msg = interaction.message;
+    const row = new ActionRowBuilder().addComponents(
+      new ButtonBuilder().setLabel('Confirm Ban').setStyle(ButtonStyle.Primary).setCustomId('confirm ban'),
+      new ButtonBuilder().setLabel('Cancel').setStyle(ButtonStyle.Danger).setCustomId('cancel')
+    );
+    interaction.update({embeds: [msg.embeds[0]], components: [row]});
+  }
+  else if (interaction.customId === 'confirm ban') {
     // get the uid that you stashed in the message :)
-    let msg = interaction.message; const uid = msg.embeds[0].fields[1].value;
+    const msg = interaction.message; const uid = msg.embeds[0].fields[1].value;
     interaction.update({embed: [msg.embeds[0]], components: []});
     msg.guild.bans.create(uid, {'deleteMessageSeconds':604800, 'reason': 'images sent broke rules'});
   }
-  if (interaction.customId === 'cancel') {
+  else if (interaction.customId === 'cancel') {
     interaction.update({embed: [interaction.message.embeds[0]], components: []});
   }
 
