@@ -45,7 +45,7 @@ const verifiedUsers = process.env.VERIFIED_USERS.split(' ');
 
 client.on('messageCreate', async message => {
   if (message.author.bot) return;
-  if (verifiedUsers.includes(message.author.id)) { console.log('here'); return;}
+  if (verifiedUsers.includes(message.author.id)) return;
   // let attachments_channel;
   // if (ics45jchannels.includes(message.channel.id)) {
   //   attachments_channel = '1195599598362832926';
