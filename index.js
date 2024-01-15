@@ -38,51 +38,14 @@ for (const file of eventFiles) {
 	}
 }
 
-const cs161channels = [
-  // welcome
-  '1085232579503997143',
-  // general
-  '1085236053838929971', 
-  // leetcode
-  '1120014804644536401',
-  // discussions
-  '1085232579503997144',
-  // exams
-  '1108590016067817502',
-  // ed
-  '1085233830857814086',
-  // shindler quotes
-  '1157337970282602628',
-  // klefstad quotes
-  '1093000092845363251',
-  // ask ofek
-  '1174076615320420472',
-  // off topic
-  '1085232579503997146',
-  // spam
-  '1106385921986789426',
-  // attachments
-  '1195479401056440320'
-]
-
-const ics45jchannels = [
-  // welcome
-  '1169744325513592981',
-  // general
-  '1169744325513592982',
-  // ed
-  '1169744325731684365',
-  // off topic
-  '1169744325731684368',
-  // attachments
-  '1195599598362832926'
-]
-
+const cs161channels = process.env.CS161.split(' ');
+const ics45jchannels = process.env.ICS45J.split(' ');
+const verifiedUsers = process.env.VERIFIED_USERS.split(' ');
 
 
 client.on('messageCreate', async message => {
   if (message.author.bot) return;
-
+  if (verifiedUsers.includes(message.author.id)) { console.log('here'); return;}
   // let attachments_channel;
   // if (ics45jchannels.includes(message.channel.id)) {
   //   attachments_channel = '1195599598362832926';
