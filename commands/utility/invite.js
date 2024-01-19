@@ -14,6 +14,6 @@ module.exports = {
       const user_channel = interaction.channelId;
       const channel = cs161channels.includes(user_channel) ? process.env.CS161_INVITE : ics45jchannels.includes(user_channel) ? process.env.ICS45J_INVITE : null;
       const invite = await interaction.guild.invites.create(channel, { maxAge: 86400, maxUses: 1});
-      await interaction.reply(`Here is your single use invite link: ${invite.url}`);
+      await interaction.reply({ephemeral: true, content: `Here is your single use invite link: ${invite.url}`});
     }
 }
