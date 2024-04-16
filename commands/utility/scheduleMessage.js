@@ -22,8 +22,14 @@ module.exports = {
         const channel = interaction.channelId == process.env.CS161_ANNOUNCEMENTS ? interaction.client.channels.cache.get(cs161) : interaction.channelId == process.env.ICS45J_ANNOUNCEMENTS ? interaction.client.channels.cache.get(ics45j) : null;
         const ping_role = interaction.channelId == process.env.CS161_ANNOUNCEMENTS ? process.env.CS161_ROLE : interaction.channelId == process.env.ICS45J_ANNOUNCEMENTS ? process.env.ICS45J_ROLE : null;
         const datetime = new Date(`${datestring}T${time}:00`);
-        console.log(datetime, channel, ping_role);
-        schedule.scheduleJob(datetime, ((chan, msg, role) => {chan.send(`<@&${role}> ${msg}`);}).bind(null, channel, message, ping_role));
-        await interaction.reply({ephemeral: true, content: `Scheduled ${message} for ${datetime}`});
+        // console.log(datetime, channel, ping_role);
+        if (`${datetime}` != "Invalid Date") {
+            // console.log("valid reply");
+            // console.log(`${datetime}`);
+            schedule.scheduleJob(datetime, ((chan, msg, role) => {chan.send(`<@&${role}> ${msg}`);}).bind(null, channel, message, ping_role));
+            await interaction.reply({ephemeral: true, content: `Scheduled ${message} for ${datetime}`});
+        } else {
+            await interaction.reply({ephemeral: true, content: `Message not scheduled, Invalid Date`});
+        }
     }
 }
